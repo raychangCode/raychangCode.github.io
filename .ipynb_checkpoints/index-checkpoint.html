@@ -20,24 +20,46 @@
         <h1>Whyyyyyyyyyyyyyy</h1>
     </body>
     <script>
+//         mySpec = {
+//             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+//             "data": {
+//                 "values": [
+//                     {"A": 20, "B": 21, "C": 2},
+//                     {"A": 30, "B": 20, "C": 4},
+//                     {"A": 25, "B": 15, "C": 6},
+//                     {"A": 5, "B": 30, "C": 8}
+//                 ]
+//             },
+//             "mark": "circle",
+//             "encoding": {
+//                 "x": { "field": "A", "type": "quantitative"},
+//                 "y": { "field": "B", "type": "quantitative"},
+//                 "size": { "field": "C", "type": "quantitative"}
+//             }
+//         };
+//         vegaEmbed('#myviz', mySpec);        
+        
         mySpec = {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-            "data": {
-                "values": [
-                    {"A": 20, "B": 21, "C": 2},
-                    {"A": 30, "B": 20, "C": 4},
-                    {"A": 25, "B": 15, "C": 6},
-                    {"A": 5, "B": 30, "C": 8}
-                ]
-            },
-            "mark": "circle",
+            "data": {"url": "/data/building_inventory.csv"},
+            "mark": "bar",
             "encoding": {
-                "x": { "field": "A", "type": "quantitative"},
-                "y": { "field": "B", "type": "quantitative"},
-                "size": { "field": "C", "type": "quantitative"}
+              "x": {
+                "timeUnit": "year",
+                "field": "Year Acquired",
+                "type": "ordinal"
+              },
+              "y": {
+                "aggregate": "count",
+                "type": "quantitative"
+              },
+              "color": {
+                "field": "Agency Name",
+                "type": "nominal"
+              }
             }
         };
-        vegaEmbed('#myviz', mySpec);        
+        vegaEmbed('#myviz', mySpec);
     </script>
     <script>
         newSpec = {

@@ -45,7 +45,8 @@
               "data": {"url": "/data/building_inventory.csv"},
               "mark": "line",
               "encoding": {
-                "x": {"field": "Year Acquired", "type": "quantitative"}
+              "x": {"timeUnit": "year", "field": "Year Acquired"},
+              "y": {"aggregate": "count", "field": "Square Footage"}
               }
         };
         vegaEmbed('#new_viz', newSpec);

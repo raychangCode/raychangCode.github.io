@@ -41,10 +41,11 @@
     </script>
     <script>
         newSpec = {
-              "data": {"url": "./data/building_inventory.csv"},
+              "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+              "data": {"url": "/data/building_inventory.csv"},
               "mark": "line",
               "encoding": {
-                "x": {"field": "City"}
+                "x": {"field": "Year Acquired", "type": "quantitative"}
               }
         };
         vegaEmbed('#new_viz', newSpec);

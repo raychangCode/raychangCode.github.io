@@ -69,7 +69,7 @@
               "mark": "line",
               "encoding": {
               "x": {"timeUnit": "year", "field": "Year Acquired"},
-              "y": {"aggregate": "count", "field": "Square Footage"}
+              "y": {"aggregate": "sum", "field": "Square Footage"}
               }
         };
         vegaEmbed('#new_viz', newSpec);

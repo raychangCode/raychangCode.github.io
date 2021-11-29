@@ -1,77 +1,160 @@
-    <html>
-    <head>
-        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-        <title>This is my example homepage.</title>
-    </head>
-    <body>
-        <p>
-            This page is under construction.
-        </p>
-        <p>
-            I will work on this later.
-        </p>
-            <div id="myviz">
-            </div>
-            <div id="new_viz">
-            </div>
-        <h1>Whyyyyyyyyyyyyyy</h1>
-        
-    </body>
+<html>
 
-    <script>
-//         mySpec = {
-//             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-//             "data": {
-//                 "values": [
-//                     {"A": 20, "B": 21, "C": 2},
-//                     {"A": 30, "B": 20, "C": 4},
-//                     {"A": 25, "B": 15, "C": 6},
-//                     {"A": 5, "B": 30, "C": 8}
-//                 ]
-//             },
-//             "mark": "circle",
-//             "encoding": {
-//                 "x": { "field": "A", "type": "quantitative"},
-//                 "y": { "field": "B", "type": "quantitative"},
-//                 "size": { "field": "C", "type": "quantitative"}
-//             }
-//         };
-//         vegaEmbed('#myviz', mySpec);        
-        
-        mySpec = {
-            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-            "data": {"url": "/data/building_inventory.csv"},
-            "mark": "bar",
-            "encoding": {
-              "x": {
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <title>This is my example homepage.</title>
+</head>
+
+<body>
+    <h1>IS445 - data viz</h1>
+    <h2>Viz for homework</h2>
+    <div id="myviz">
+    </div>
+    <div id="new_viz">
+    </div>
+    <h2>Viz for Final</h2>
+    <div id='final_viz'></div>
+
+</body>
+
+<script>
+
+    mySpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "data": { "url": "/data/building_inventory.csv" },
+        "mark": "bar",
+        "encoding": {
+            "x": {
                 "timeUnit": "year",
                 "field": "Year Acquired",
                 "type": "ordinal"
-              },
-              "y": {
+            },
+            "y": {
                 "aggregate": "count",
                 "type": "quantitative"
-              },
-              "color": {
+            },
+            "color": {
                 "field": "Agency Name",
                 "type": "nominal"
-              }
             }
-        };
-        vegaEmbed('#myviz', mySpec);
-    </script>
-    <script>
-        newSpec = {
-              "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-              "data": {"url": "/data/building_inventory.csv"},
-              "mark": "line",
-              "encoding": {
-              "x": {"timeUnit": "year", "field": "Year Acquired"},
-              "y": {"aggregate": "sum", "field": "Square Footage"}
-              }
-        };
-        vegaEmbed('#new_viz', newSpec);
-    </script>
+        }
+    };
+    vegaEmbed('#myviz', mySpec);
+</script>
+<script>
+    newSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "data": { "url": "/data/building_inventory.csv" },
+        "mark": "line",
+        "encoding": {
+            "x": { "timeUnit": "year", "field": "Year Acquired" },
+            "y": { "aggregate": "sum", "field": "Square Footage" }
+        }
+    };
+    vegaEmbed('#new_viz', newSpec);
+</script>
+
+<script>
+    finalSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "data": { "url": "https://data.nasa.gov/resource/y77d-th95.json" },
+        "transform": [{ "window": [{ "op": "row_number", "as": "row_number" }] }],
+        "vconcat": [
+            {
+                "params": [{ "name": "brush", "select": "interval" }],
+                "width": 500,
+                "transform": [
+                    { "filter": "datum.mass <= 1000000" },
+                    { "filter": "datum.year != null" },
+                    { "filter": { "field": "year", "timeUnit": "year", "gt": 1900 } }
+                ],
+                "mark": "point",
+                "encoding": {
+                    "x": { "field": "year", "timeUnit": "year", "type": "ordinal" },
+                    "y": { "field": "mass", "type": "quantitative" },
+                    "color": {
+                        "condition": {
+                            "param": "brush",
+                            "field": "mass",
+                            "type": "quantitative"
+                        },
+                        "value": "grey"
+                    }
+                }
+            },
+            {
+                "projection": { "type": "equalEarth" },
+                "width": 500,
+                "layer": [
+                    {
+                        "data": {
+                            "url": "data/world-110m.json",
+                            "format": { "type": "topojson", "feature": "countries" }
+                        },
+                        "mark": { "type": "geoshape", "fill": "lightgray", "stroke": "white" }
+                    },
+                    {
+                        "transform": [
+                            { "filter": { "param": "brush" } },
+                            { "filter": { "field": "reclong", "valid": true } },
+                            { "filter": { "field": "reclat", "valid": true } }
+                        ],
+                        "mark": "circle",
+                        "encoding": {
+                            "longitude": { "field": "reclong", "type": "quantitative" },
+                            "latitude": { "field": "reclat", "type": "quantitative" },
+                            "size": {
+                                "field": "mass",
+                                "type": "quantitative",
+                                "scale": { "rangeMax": 1000 },
+                                "legend": null
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "transform": [
+                    { "filter": { "param": "brush" } },
+                    { "window": [{ "op": "rank", "as": "rank" }] },
+                    { "filter": { "field": "rank", "lt": 20 } }
+                ],
+                "hconcat": [
+                    {
+                        "width": 100,
+                        "title": "Name",
+                        "mark": "text",
+                        "encoding": {
+                            "text": { "field": "name", "type": "nominal" },
+                            "y": { "field": "row_number", "type": "ordinal", "axis": null }
+                        }
+                    },
+                    {
+                        "width": 100,
+                        "title": "Mass",
+                        "mark": "text",
+                        "encoding": {
+                            "text": { "field": "mass", "type": "nominal" },
+                            "y": { "field": "row_number", "type": "ordinal", "axis": null }
+                        }
+                    },
+                    {
+                        "width": 100,
+                        "title": "class",
+                        "mark": "text",
+                        "encoding": {
+                            "text": { "field": "recclass", "type": "nominal" },
+                            "y": { "field": "row_number", "type": "ordinal", "axis": null }
+                        }
+                    }
+                ]
+            }
+        ],
+        "resolve": { "legend": { "color": "independent" } }
+    };
+    vegaEmbed('#final_viz', finalSpec);
+</script>
+
 </html>

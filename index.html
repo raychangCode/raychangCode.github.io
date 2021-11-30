@@ -64,7 +64,7 @@
         "vconcat": [
             {
                 "params": [{ "name": "brush", "select": "interval" }],
-                "width": 500,
+                "width": 600,
                 "transform": [
                     { "filter": "datum.mass <= 1000000" },
                     { "filter": "datum.year != null" },
@@ -85,6 +85,15 @@
                 }
             },
             {
+                "transform": [{ "filter": { "param": "brush" } }],
+                "width": 600,
+                "mark": "bar",
+                "encoding": {
+                    "x": { "bin": { "maxbins": 50 }, "field": "mass" },
+                    "y": { "aggregate": "count" }
+                }
+            },
+            {
                 "projection": { "type": "equalEarth" },
                 "width": 600,
                 "layer": [
@@ -93,7 +102,7 @@
                             "url": "data/world-110m.json",
                             "format": { "type": "topojson", "feature": "countries" }
                         },
-                        "mark": { "type": "geoshape", "fill": "grey", "stroke": "white" }
+                        "mark": { "type": "geoshape", "fill": "lightgray", "stroke": "white" }
                     },
                     {
                         "transform": [
@@ -116,6 +125,16 @@
                 ]
             },
             {
+                "transform": [{ "filter": { "param": "brush" } }],
+                "width": 600,
+                "mark": "point",
+                "title": "Landing Location",
+                "encoding": {
+                    "x": { "field": "reclong", "type": "quantitative" },
+                    "y": { "field": "reclat", "type": "quantitative" }
+                }
+            },
+            {
                 "transform": [
                     { "filter": { "param": "brush" } },
                     { "window": [{ "op": "rank", "as": "rank" }] },
@@ -123,7 +142,7 @@
                 ],
                 "hconcat": [
                     {
-                        "width": 100,
+                        "width": 200,
                         "title": "Name",
                         "mark": "text",
                         "encoding": {
@@ -132,7 +151,7 @@
                         }
                     },
                     {
-                        "width": 100,
+                        "width": 200,
                         "title": "Mass",
                         "mark": "text",
                         "encoding": {
@@ -141,7 +160,7 @@
                         }
                     },
                     {
-                        "width": 100,
+                        "width": 200,
                         "title": "class",
                         "mark": "text",
                         "encoding": {

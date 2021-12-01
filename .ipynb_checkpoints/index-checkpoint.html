@@ -21,16 +21,16 @@ finalSpec={
   "transform": [{"window": [{"op": "row_number", "as": "row_number"}]}],
   "vconcat": [
     {
-      "params": [{"name": "brush", "select": "interval"}],
       "width": 900,
       "transform": [
         {"filter": "datum.mass <= 1000000"},
         {"filter": "datum.year != null"},
         {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
       ],
+      "params": [{"name": "brush", "select": "interval", "value": {"x": [-662623231333,993484218359], "y": [0, 1000]}}],
       "mark": "point",
       "encoding": {
-        "x": {"field": "year", "timeUnit": "year", "type": "ordinal"},
+        "x": {"field": "year", "timeUnit": "year", "type": "temporal"},
         "y": {"field": "mass", "type": "quantitative"},
         "color": {
           "condition": {
@@ -121,7 +121,6 @@ finalSpec={
     }
   ],
   "resolve": {"legend": {"color": "independent"}}
-};
     vegaEmbed('#final_viz', finalSpec);
 </script>
 

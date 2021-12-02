@@ -21,7 +21,7 @@ finalSpec={
   "transform": [{"window": [{"op": "row_number", "as": "row_number"}]}],
   "vconcat": [
     {
-      "title": {"text":"Meteorite Landings Time", "fontSize": 20, "color": "coral"},
+      "title": {"text":"Meteorite Landings Time", "fontSize": 20, "color": "gray"},
       "width": 900,
       "transform": [
         {"filter": "datum.mass <= 1000000"},
@@ -60,7 +60,7 @@ finalSpec={
       }
     },
     {
-      "title": {"text":"Mass Analysis", "fontSize": 20, "color": "coral"},
+      "title": {"text":"Mass Analysis", "fontSize": 20, "color": "gray"},
       "transform": [{"filter": {"param": "brush"}}],
       "width": 900,
       "mark": "bar",
@@ -99,11 +99,10 @@ finalSpec={
             "aggregate": "sum"
           }
         ]
-        
       }
     },
     {
-      "title": {"text":"Meteorite Landings on Map", "fontSize": 20, "color": "coral"},
+      "title": {"text":"Meteorite Landings on Map", "fontSize": 20, "color": "gray"},
       "projection": {"type": "equalEarth"},
       "width": 900,
       "height": 600,
@@ -162,7 +161,7 @@ finalSpec={
       ]
     },
     {
-      "title": {"text":"Data of Selected Meteorite(20)", "fontSize": 20, "color": "coral", "anchor": "middle"},
+      "title": {"text":"Data of Selected Meteorite(20)", "fontSize": 20, "color": "gray", "anchor": "middle"},
       "transform": [
         {"filter": {"param": "brush"}},
         {"window": [{"op": "rank", "as": "rank"}]},

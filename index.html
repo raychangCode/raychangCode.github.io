@@ -21,17 +21,33 @@ finalSpec={
   "transform": [{"window": [{"op": "row_number", "as": "row_number"}]}],
   "vconcat": [
     {
+      "title": {"text":"Meteorite Landings Time", "fontSize": 20, "color": "coral"},
       "width": 900,
       "transform": [
         {"filter": "datum.mass <= 1000000"},
         {"filter": "datum.year != null"},
         {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
       ],
-      "params": [{"name": "brush", "select": "interval", "value": {"x": [-662623231333,993484218359], "y": [0, 10000]}}],
+      "params": [
+        {
+          "name": "brush",
+          "select": "interval",
+          "value": {"x": [-662623231333, 993484218359], "y": [0, 1000]}
+        },
+        {
+          "name": "whereami",
+          "select": {"type": "point", "on": "mouseover", "nearest": true}
+        }
+      ],
       "mark": "point",
       "encoding": {
-        "x": {"field": "year", "timeUnit": "year", "type": "temporal", "title": "Year"},
-        "y": {"field": "mass", "type": "quantitative", "title": "Mass (g)"},
+        "x": {
+          "field": "year",
+          "timeUnit": "year",
+          "type": "temporal",
+          "title": "Year"
+        },
+        "y": {"field": "mass", "type": "quantitative", "title": "Mass"},
         "color": {
           "condition": {
             "param": "brush",
@@ -39,30 +55,66 @@ finalSpec={
             "type": "quantitative",
             "scale": {"scheme": "lightmulti"}
           },
-          "value": "grey"
+          "value":"grey"
         }
       }
     },
     {
+      "title": {"text":"Mass Analysis", "fontSize": 20, "color": "coral"},
       "transform": [{"filter": {"param": "brush"}}],
       "width": 900,
       "mark": "bar",
       "encoding": {
         "x": {"bin": {"maxbins": 50}, "field": "mass"},
-        "y": {"aggregate": "count"}
+        "y": {"aggregate": "count"},
+        "tooltip": [
+          {
+            "field": "mass",
+            "type": "quantitative",
+            "title": "Amount of Meteorite",
+            "aggregate": "count"
+          },
+          {
+            "field": "mass",
+            "type": "quantitative",
+            "title": "Min",
+            "aggregate": "min"
+          },
+          {
+            "field": "mass",
+            "type": "quantitative",
+            "title": "Max",
+            "aggregate": "max"
+          },
+          {
+            "field": "mass",
+            "type": "quantitative",
+            "title": "Avg",
+            "aggregate": "average"
+          },
+          {
+            "field": "mass",
+            "type": "quantitative",
+            "title": "Sum",
+            "aggregate": "sum"
+          }
+        ]
+        
       }
     },
     {
+      "title": {"text":"Meteorite Landings on Map", "fontSize": 20, "color": "coral"},
       "projection": {"type": "equalEarth"},
       "width": 900,
       "height": 600,
       "layer": [
         {
           "data": {
+            "name": "world",
             "url": "https://unpkg.com/world-atlas@1/world/110m.json",
             "format": {"type": "topojson", "feature": "countries"}
           },
-          "mark": {"type": "geoshape", "fill": "grey", "stroke": "white"}
+          "mark": {"type": "geoshape", "fill": "black", "stroke": "white"}
         },
         {
           "transform": [
@@ -70,22 +122,47 @@ finalSpec={
             {"filter": {"field": "reclong", "valid": true}},
             {"filter": {"field": "reclat", "valid": true}}
           ],
+          "params": [
+            {
+              "name": "paintbrush",
+              "select": {"type": "point", "on": "mouseover", "nearest": true}
+            }
+          ],
           "mark": "circle",
           "encoding": {
             "longitude": {"field": "reclong", "type": "quantitative"},
             "latitude": {"field": "reclat", "type": "quantitative"},
-            "tooltip": [{"field": "name", "type": "ordinal"}, {"field": "year", "timeUnit": "year", "type": "temporal", "title":"Year"}, {"field": "mass", "type": "quantitative", "title":"Mass(g)"} ],
+            "tooltip": [
+              {"field": "name", "type": "ordinal"},
+              {
+                "field": "year",
+                "timeUnit": "year",
+                "type": "temporal",
+                "title": "Year"
+              },
+              {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
+            ],
             "size": {
               "field": "mass",
               "type": "quantitative",
               "scale": {"rangeMax": 1000},
               "legend": null
+            },
+            "color": {
+              "condition": {
+                "param": "paintbrush",
+                "field": "mass",
+                "type": "quantitative",
+                "legend": null
+              },
+              "value":"gray"
             }
           }
         }
       ]
     },
     {
+      "title": {"text":"Data of Selected Meteorite(20)", "fontSize": 20, "color": "coral", "anchor": "middle"},
       "transform": [
         {"filter": {"param": "brush"}},
         {"window": [{"op": "rank", "as": "rank"}]},

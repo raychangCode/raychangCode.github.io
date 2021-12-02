@@ -17,7 +17,7 @@
 <script>
 finalSpec={
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {"url": "https://data.nasa.gov/resource/y77d-th95.json"},
+  "data": {"url": "https://data.nasa.gov/resource/gh4g-9sfh.json"},
   "transform": [{"window": [{"op": "row_number", "as": "row_number"}]}],
   "vconcat": [
     {
@@ -30,13 +30,14 @@ finalSpec={
       "params": [{"name": "brush", "select": "interval", "value": {"x": [-662623231333,993484218359], "y": [0, 1000]}}],
       "mark": "point",
       "encoding": {
-        "x": {"field": "year", "timeUnit": "year", "type": "temporal"},
-        "y": {"field": "mass", "type": "quantitative"},
+        "x": {"field": "year", "timeUnit": "year", "type": "temporal", "title": "Year"},
+        "y": {"field": "mass", "type": "quantitative", "title": "Mass (g)"},
         "color": {
           "condition": {
             "param": "brush",
             "field": "mass",
-            "type": "quantitative"
+            "type": "quantitative",
+            "scale": {"scheme": "lightmulti"}
           },
           "value": "grey"
         }
@@ -73,6 +74,7 @@ finalSpec={
           "encoding": {
             "longitude": {"field": "reclong", "type": "quantitative"},
             "latitude": {"field": "reclat", "type": "quantitative"},
+            "tooltip": [{"field": "name", "type": "ordinal"}, {"field": "year", "timeUnit": "year", "type": "temporal", "title":"Year"}, {"field": "mass", "type": "quantitative", "title":"Mass(g)"} ],
             "size": {
               "field": "mass",
               "type": "quantitative",

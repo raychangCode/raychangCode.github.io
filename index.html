@@ -28,7 +28,9 @@ finalSpec={
       "title": {
         "text": "Meteorite Landings Time",
         "fontSize": 20,
-        "color": "gray"
+        "color": "gray",
+        "subtitle": "(Hold shift key + mouse to select)",
+        "subtitleColor":"gray"
       },
       "width": 900,
       "transform": [
@@ -36,13 +38,20 @@ finalSpec={
         {"filter": "datum.mass <= 1000000"},
         {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
       ],
-      "params": [
-        {
-          "name": "brush",
-          "select": {"type": "interval", "encodings": ["x", "y"]},
-          "value": {"x": [-662623231333, 993484218359], "y": [0, 1000]}
+      "selection": {
+        "zoom": {
+          "type": "interval",
+          "bind": "scales",
+          "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
+          "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove!"
+        },
+        "brush": {
+          "type": "interval",
+          "encodings": ["x", "y"],
+          "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+          "translate": "[mousedown[event.shiftKey], mouseup] > mousemove!"
         }
-      ],
+      },
       "mark": "point",
       "encoding": {
         "x": {
@@ -57,7 +66,7 @@ finalSpec={
             "param": "brush",
             "field": "mass",
             "type": "quantitative",
-            "scale": {"scheme": "purpleorange"}
+            "scale": {"scheme": "redpurple"}
           },
           "value": "grey"
         }
@@ -95,7 +104,7 @@ finalSpec={
             "param": "brush",
             "field": "mass",
             "type": "quantitative",
-            "scale": {"scheme": "purpleorange"}
+            "scale": {"scheme": "redpurple"}
           },
           "value": "grey"
         },
@@ -208,7 +217,7 @@ finalSpec={
               "field": "mass",
               "type": "quantitative",
               "legend": null,
-              "scale": {"scheme": "purpleorange"},
+              "scale": "redpurple",
               "condition": {"param": "paintbrush", "value": "red"}
             }
           }

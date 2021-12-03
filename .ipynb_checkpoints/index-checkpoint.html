@@ -21,22 +21,22 @@ finalSpec={
   "transform": [{"window": [{"op": "row_number", "as": "row_number"}]}],
   "vconcat": [
     {
-      "title": {"text":"Meteorite Landings Time", "fontSize": 20, "color": "gray"},
+      "title": {
+        "text": "Meteorite Landings Time",
+        "fontSize": 20,
+        "color": "gray"
+      },
       "width": 900,
       "transform": [
-        {"filter": "datum.mass <= 1000000"},
         {"filter": "datum.year != null"},
+        {"filter": "datum.mass <= 1000000"},
         {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
       ],
       "params": [
         {
           "name": "brush",
-          "select": "interval",
+          "select": {"type": "interval", "encodings": ["x", "y"]},
           "value": {"x": [-662623231333, 993484218359], "y": [0, 1000]}
-        },
-        {
-          "name": "whereami",
-          "select": {"type": "point", "on": "mouseover", "nearest": true}
         }
       ],
       "mark": "point",
@@ -53,14 +53,62 @@ finalSpec={
             "param": "brush",
             "field": "mass",
             "type": "quantitative",
-            "scale": {"scheme": "lightmulti"}
+            "scale": {"scheme": "purpleorange"}
           },
-          "value":"grey"
+          "value": "grey"
         }
       }
     },
     {
-      "title": {"text":"Mass Analysis", "fontSize": 20, "color": "gray"},
+      "title": {
+        "text": "Meteorite Landings Time(Zoom)",
+        "fontSize": 20,
+        "color": "gray"
+      },
+      "width": 900,
+      "transform": [
+        {"filter": "datum.mass <= 1000000"},
+        {"filter": "datum.year != null"},
+        {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
+      ],
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "year",
+          "timeUnit": "year",
+          "type": "temporal",
+          "title": "Year",
+          "scale": {"domain": {"selection": "brush", "encoding": "x"}}
+        },
+        "y": {
+          "field": "mass",
+          "type": "quantitative",
+          "title": "Mass",
+          "scale": {"domain": {"selection": "brush", "encoding": "y"}}
+        },
+        "color": {
+          "condition": {
+            "param": "brush",
+            "field": "mass",
+            "type": "quantitative",
+            "scale": {"scheme": "purpleorange"}
+          },
+          "value": "grey"
+        },
+        "tooltip": [
+          {"field": "name", "type": "ordinal"},
+          {
+            "field": "year",
+            "timeUnit": "year",
+            "type": "temporal",
+            "title": "Year"
+          },
+          {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
+        ]
+      }
+    },
+    {
+      "title": {"text": "Mass Analysis", "fontSize": 20, "color": "gray"},
       "transform": [{"filter": {"param": "brush"}}],
       "width": 900,
       "mark": "bar",
@@ -102,7 +150,11 @@ finalSpec={
       }
     },
     {
-      "title": {"text":"Meteorite Landings on Map", "fontSize": 20, "color": "gray"},
+      "title": {
+        "text": "Meteorite Landings on Map",
+        "fontSize": 20,
+        "color": "gray"
+      },
       "projection": {"type": "equalEarth"},
       "width": 900,
       "height": 600,
@@ -113,7 +165,7 @@ finalSpec={
             "url": "https://unpkg.com/world-atlas@1/world/110m.json",
             "format": {"type": "topojson", "feature": "countries"}
           },
-          "mark": {"type": "geoshape", "fill": "black", "stroke": "white"}
+          "mark": {"type": "geoshape", "fill": "grey", "stroke": "white"}
         },
         {
           "transform": [
@@ -133,6 +185,7 @@ finalSpec={
             "latitude": {"field": "reclat", "type": "quantitative"},
             "tooltip": [
               {"field": "name", "type": "ordinal"},
+              {"field": "recclass", "type": "nominal"},
               {
                 "field": "year",
                 "timeUnit": "year",
@@ -148,24 +201,27 @@ finalSpec={
               "legend": null
             },
             "color": {
-              "condition": {
-                "param": "paintbrush",
-                "field": "mass",
-                "type": "quantitative",
-                "legend": null
-              },
-              "value":"gray"
+              "field": "mass",
+              "type": "quantitative",
+              "legend": null,
+              "scale": {"scheme": "purpleorange"},
+              "condition": {"param": "paintbrush", "value": "red"}
             }
           }
         }
       ]
     },
     {
-      "title": {"text":"Data of Selected Meteorite(20)", "fontSize": 20, "color": "gray", "anchor": "middle"},
+      "title": {
+        "text": "Data of Selected Meteorite(20)",
+        "fontSize": 20,
+        "color": "gray",
+        "anchor": "middle"
+      },
       "transform": [
         {"filter": {"param": "brush"}},
         {"window": [{"op": "rank", "as": "rank"}]},
-        {"filter": {"field": "rank", "lt": 20}}
+        {"filter": {"field": "rank", "lt": 30}}
       ],
       "hconcat": [
         {

@@ -1,0 +1,288 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <title>IS445 - Meteorite Landings Dash Board</title>
+</head>
+<style>
+h1 { 
+  color: gray;
+  font-family:arial;
+}
+body {
+  background-image: url('./data/bg.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;  
+  background-size: cover;
+}
+</style>
+
+<body>
+<!--     <h1>IS445 - data viz</h1>
+    <h2>Viz for Final</h2> -->
+    <div style="text-align: center;">
+        <h1>Meteorite Landings Dash Board</h1>
+    </div>
+    
+    <div style="text-align: center;">
+        <div id='final_viz'>
+        </div>
+    </div>
+</body>
+
+<script>
+finalSpec={
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "https://data.nasa.gov/resource/gh4g-9sfh.json"},
+  "transform": [{"window": [{"op": "row_number", "as": "row_number"}]}],
+  "background": null,
+  "vconcat": [
+    {
+      "title": {
+        "text": "Meteorite Landings Time",
+        "fontSize": 20,
+        "color": "gray",
+        "subtitle": "(Hold shift key + mouse to select)",
+        "subtitleColor":"gray"
+      },
+      "width": 900,
+      "transform": [
+        {"filter": "datum.year != null"},
+        {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
+      ],
+      "selection": {
+        "zoom": {
+          "type": "interval",
+          "bind": "scales",
+          "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
+          "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove!"
+        },
+        "brush": {
+          "type": "interval",
+          "encodings": ["x", "y"],
+          "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+          "translate": "[mousedown[event.shiftKey], mouseup] > mousemove!"
+        }
+      },
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "year",
+          "timeUnit": "year",
+          "type": "temporal",
+          "title": "Year"
+        },
+        "y": {"field": "mass", "type": "quantitative", "title": "Mass"},
+        "color": {
+          "condition": {
+            "param": "brush",
+            "field": "mass",
+            "type": "quantitative",
+            "scale": {"scheme": "goldorange"}
+          },
+          "value": "grey"
+        }
+      }
+    },
+    {
+      "title": {
+        "text": "Meteorite Landings Time(Zoom)",
+        "fontSize": 20,
+        "color": "gray"
+      },
+      "width": 900,
+      "transform": [
+        {"filter": "datum.year != null"},
+        {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
+      ],
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "year",
+          "timeUnit": "year",
+          "type": "temporal",
+          "title": "Year",
+          "scale": {"domain": {"selection": "brush", "encoding": "x"}}
+        },
+        "y": {
+          "field": "mass",
+          "type": "quantitative",
+          "title": "Mass",
+          "scale": {"domain": {"selection": "brush", "encoding": "y"}}
+        },
+        "color": {
+          "condition": {
+            "param": "brush",
+            "field": "mass",
+            "type": "quantitative",
+            "scale": {"scheme": "goldorange"}
+          },
+          "value": "grey"
+        },
+        "tooltip": [
+          {"field": "name", "type": "ordinal"},
+          {
+            "field": "year",
+            "timeUnit": "year",
+            "type": "temporal",
+            "title": "Year"
+          },
+          {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
+        ]
+      }
+    },
+    {
+      "title": {"text": "Mass Analysis", "fontSize": 20, "color": "gray"},
+      "transform": [{"filter": {"param": "brush"}}],
+      "width": 900,
+      "mark": "bar",
+      "encoding": {
+        "x": {"bin": {"maxbins": 50}, "field": "mass"},
+        "y": {"aggregate": "count"},
+        "tooltip": [
+          {
+            "field": "mass",
+            "type": "quantitative",
+            "title": "Amount of Meteorite",
+            "aggregate": "count"
+          },
+          {
+            "field": "mass",
+            "type": "quantitative",
+            "title": "Min",
+            "aggregate": "min"
+          },
+          {
+            "field": "mass",
+            "type": "quantitative",
+            "title": "Max",
+            "aggregate": "max"
+          },
+          {
+            "field": "mass",
+            "type": "quantitative",
+            "title": "Avg",
+            "aggregate": "average"
+          },
+          {
+            "field": "mass",
+            "type": "quantitative",
+            "title": "Sum",
+            "aggregate": "sum"
+          }
+        ]
+      }
+    },
+    {
+      "title": {
+        "text": "Meteorite Landings on Map",
+        "fontSize": 20,
+        "color": "gray"
+      },
+      "projection": {"type": "equalEarth"},
+      "width": 900,
+      "height": 600,
+      "layer": [
+        {
+          "data": {
+            "name": "world",
+            "url": "https://unpkg.com/world-atlas@1/world/110m.json",
+            "format": {"type": "topojson", "feature": "countries"}
+          },
+          "mark": {"type": "geoshape", "fill": "grey", "stroke": "white"}
+        },
+        {
+          "transform": [
+            {"filter": {"param": "brush"}},
+            {"filter": {"field": "reclong", "valid": true}},
+            {"filter": {"field": "reclat", "valid": true}}
+          ],
+          "params": [
+            {
+              "name": "paintbrush",
+              "select": {"type": "point", "on": "mouseover", "nearest": true}
+            }
+          ],
+          "mark": "circle",
+          "encoding": {
+            "longitude": {"field": "reclong", "type": "quantitative"},
+            "latitude": {"field": "reclat", "type": "quantitative"},
+            "tooltip": [
+              {"field": "name", "type": "ordinal"},
+              {"field": "recclass", "type": "nominal"},
+              {
+                "field": "year",
+                "timeUnit": "year",
+                "type": "temporal",
+                "title": "Year"
+              },
+              {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
+            ],
+            "size": {
+              "field": "mass",
+              "type": "quantitative",
+              "scale": {"rangeMax": 1000},
+              "legend": null
+            },
+            "color": {
+              "field": "mass",
+              "type": "quantitative",
+              "legend": null,
+              "scale": "goldorange",
+              "condition": {"param": "paintbrush", "value": "red"}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "Data of Selected Meteorite(20)",
+        "fontSize": 20,
+        "color": "gray",
+        "anchor": "middle"
+      },
+      "transform": [
+        {"filter": {"param": "brush"}},
+        {"window": [{"op": "rank", "as": "rank"}]},
+        {"filter": {"field": "rank", "lt": 30}}
+      ],
+      "hconcat": [
+        {
+          "width": 300,
+          "title": "Name",
+          "mark": "text",
+          "encoding": {
+            "text": {"field": "name", "type": "nominal"},
+            "y": {"field": "row_number", "type": "ordinal", "axis": null}
+          }
+        },
+        {
+          "width": 300,
+          "title": "Mass",
+          "mark": "text",
+          "encoding": {
+            "text": {"field": "mass", "type": "nominal"},
+            "y": {"field": "row_number", "type": "ordinal", "axis": null}
+          }
+        },
+        {
+          "width": 300,
+          "title": "class",
+          "mark": "text",
+          "encoding": {
+            "text": {"field": "recclass", "type": "nominal"},
+            "y": {"field": "row_number", "type": "ordinal", "axis": null}
+          }
+        }
+      ]
+    }
+  ],
+  "resolve": {"legend": {"color": "independent"}}
+};
+    vegaEmbed('#final_viz', finalSpec);
+</script>
+
+</html>

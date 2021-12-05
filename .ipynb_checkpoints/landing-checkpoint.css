@@ -19,8 +19,9 @@ body, html {
     background-size: cover;
     }
 .meteor {
-position: fixed;
-width: 100%;
-top: 50%;
-right: 50%;
+    position: fixed;
+    padding: 2em;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }

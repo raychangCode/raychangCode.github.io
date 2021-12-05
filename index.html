@@ -50,7 +50,6 @@ finalSpec={
       "width": 900,
       "transform": [
         {"filter": "datum.year != null"},
-        {"filter": "datum.mass <= 1000000"},
         {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
       ],
       "selection": {
@@ -95,7 +94,6 @@ finalSpec={
       },
       "width": 900,
       "transform": [
-        {"filter": "datum.mass <= 1000000"},
         {"filter": "datum.year != null"},
         {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
       ],

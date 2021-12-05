@@ -21,7 +21,7 @@ body, html {
 .meteor {
 position: absolute;
 height: 800px;
-weight: 100%;
+width: 100%;
 top: 150px;
 right: 300px;
 }

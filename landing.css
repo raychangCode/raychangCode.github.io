@@ -19,9 +19,6 @@ body, html {
     background-size: cover;
     }
 .meteor {
-position: absolute;
-height: 800px;
 width: 100%;
-top: 150px;
-right: 300px;
+z-index: 1;
 }

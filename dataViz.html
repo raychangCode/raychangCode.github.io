@@ -35,7 +35,7 @@ body {
 <script>
 finalSpec={
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {"url": "https://data.nasa.gov/resource/gh4g-9sfh.json"},
+  "data": {"url": "https://data.nasa.gov/resource/gh4g-9sfh.json?$limit=50000"},
   "transform": [{"window": [{"op": "row_number", "as": "row_number"}]}],
   "background": null,
   "vconcat": [

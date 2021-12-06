@@ -35,146 +35,10 @@ body {
 <script>
 finalSpec={
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {"url": "https://data.nasa.gov/resource/gh4g-9sfh.json?$limit=50000"},
+  "data": {"url": "https://data.nasa.gov/resource/gh4g-9sfh.json"},
   "transform": [{"window": [{"op": "row_number", "as": "row_number"}]}],
   "background": null,
-  "vconcat": [
-    {
-      "title": {
-        "text": "Meteorite Landings Time",
-        "fontSize": 20,
-        "color": "gray",
-        "subtitle": "(Hold shift key + mouse to select)",
-        "subtitleColor":"gray"
-      },
-      "width": 900,
-      "transform": [
-        {"filter": "datum.year != null"},
-        {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
-      ],
-      "selection": {
-        "zoom": {
-          "type": "interval",
-          "bind": "scales",
-          "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
-          "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove!"
-        },
-        "brush": {
-          "type": "interval",
-          "encodings": ["x", "y"],
-          "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-          "translate": "[mousedown[event.shiftKey], mouseup] > mousemove!"
-        }
-      },
-      "mark": "point",
-      "encoding": {
-        "x": {
-          "field": "year",
-          "timeUnit": "year",
-          "type": "temporal",
-          "title": "Year"
-        },
-        "y": {"field": "mass", "type": "quantitative", "title": "Mass"},
-        "color": {
-          "condition": {
-            "param": "brush",
-            "field": "mass",
-            "type": "quantitative",
-            "scale": {"scheme": "goldorange"}
-          },
-          "value": "grey"
-        }
-      }
-    },
-    {
-      "title": {
-        "text": "Meteorite Landings Time(Zoom)",
-        "fontSize": 20,
-        "color": "gray"
-      },
-      "width": 900,
-      "transform": [
-        {"filter": "datum.year != null"},
-        {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
-      ],
-      "mark": "point",
-      "encoding": {
-        "x": {
-          "field": "year",
-          "timeUnit": "year",
-          "type": "temporal",
-          "title": "Year",
-          "scale": {"domain": {"selection": "brush", "encoding": "x"}}
-        },
-        "y": {
-          "field": "mass",
-          "type": "quantitative",
-          "title": "Mass",
-          "scale": {"domain": {"selection": "brush", "encoding": "y"}}
-        },
-        "color": {
-          "condition": {
-            "param": "brush",
-            "field": "mass",
-            "type": "quantitative",
-            "scale": {"scheme": "goldorange"}
-          },
-          "value": "grey"
-        },
-        "tooltip": [
-          {"field": "name", "type": "ordinal"},
-          {
-            "field": "year",
-            "timeUnit": "year",
-            "type": "temporal",
-            "title": "Year"
-          },
-          {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
-        ]
-      }
-    },
-    {
-      "title": {"text": "Mass Analysis", "fontSize": 20, "color": "gray"},
-      "transform": [{"filter": {"param": "brush"}}],
-      "width": 900,
-      "mark": "bar",
-      "encoding": {
-        "x": {"bin": {"maxbins": 50}, "field": "mass"},
-        "y": {"aggregate": "count"},
-        "tooltip": [
-          {
-            "field": "mass",
-            "type": "quantitative",
-            "title": "Amount of Meteorite",
-            "aggregate": "count"
-          },
-          {
-            "field": "mass",
-            "type": "quantitative",
-            "title": "Min",
-            "aggregate": "min"
-          },
-          {
-            "field": "mass",
-            "type": "quantitative",
-            "title": "Max",
-            "aggregate": "max"
-          },
-          {
-            "field": "mass",
-            "type": "quantitative",
-            "title": "Avg",
-            "aggregate": "average"
-          },
-          {
-            "field": "mass",
-            "type": "quantitative",
-            "title": "Sum",
-            "aggregate": "sum"
-          }
-        ]
-      }
-    },
+  "hconcat": [
     {
       "title": {
         "text": "Meteorite Landings on Map",
@@ -238,43 +102,171 @@ finalSpec={
       ]
     },
     {
-      "title": {
-        "text": "Data of Selected Meteorite(20)",
-        "fontSize": 20,
-        "color": "gray",
-        "anchor": "middle"
-      },
-      "transform": [
-        {"filter": {"param": "brush"}},
-        {"window": [{"op": "rank", "as": "rank"}]},
-        {"filter": {"field": "rank", "lt": 30}}
-      ],
-      "hconcat": [
+      "vconcat": [
         {
+          "title": {
+            "text": "Meteorite Landings Time",
+            "fontSize": 20,
+            "color": "gray",
+            "subtitle": "(Hold shift key + mouse to select)",
+            "subtitleColor": "gray"
+          },
           "width": 300,
-          "title": "Name",
-          "mark": "text",
+          "transform": [
+            {"filter": "datum.year != null"},
+            {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
+          ],
+          "selection": {
+            "zoom": {
+              "type": "interval",
+              "bind": "scales",
+              "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
+              "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove!"
+            },
+            "brush": {
+              "type": "interval",
+              "encodings": ["x", "y"],
+              "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+              "translate": "[mousedown[event.shiftKey], mouseup] > mousemove!"
+            }
+          },
+          "mark": "point",
           "encoding": {
-            "text": {"field": "name", "type": "nominal"},
-            "y": {"field": "row_number", "type": "ordinal", "axis": null}
+            "x": {
+              "field": "year",
+              "timeUnit": "year",
+              "type": "temporal",
+              "title": "Year"
+            },
+            "y": {"field": "mass", "type": "quantitative", "title": "Mass"},
+            "color": {
+              "condition": {
+                "param": "brush",
+                "field": "mass",
+                "type": "quantitative",
+                "scale": {"scheme": "goldorange"}
+              },
+              "value": "grey"
+            }
           }
         },
         {
+          "title": {
+            "text": "Meteorite Landings Time(Zoom)",
+            "fontSize": 20,
+            "color": "gray"
+          },
           "width": 300,
-          "title": "Mass",
-          "mark": "text",
+          "transform": [
+            {"filter": "datum.year != null"},
+            {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
+          ],
+          "mark": "point",
           "encoding": {
-            "text": {"field": "mass", "type": "nominal"},
-            "y": {"field": "row_number", "type": "ordinal", "axis": null}
+            "x": {
+              "field": "year",
+              "timeUnit": "year",
+              "type": "temporal",
+              "title": "Year",
+              "scale": {"domain": {"selection": "brush", "encoding": "x"}}
+            },
+            "y": {
+              "field": "mass",
+              "type": "quantitative",
+              "title": "Mass",
+              "scale": {"domain": {"selection": "brush", "encoding": "y"}}
+            },
+            "color": {
+              "condition": {
+                "param": "brush",
+                "field": "mass",
+                "type": "quantitative",
+                "scale": {"scheme": "goldorange"}
+              },
+              "value": "grey"
+            },
+            "tooltip": [
+              {"field": "name", "type": "ordinal"},
+              {
+                "field": "year",
+                "timeUnit": "year",
+                "type": "temporal",
+                "title": "Year"
+              },
+              {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "vconcat": [
+        {
+          "title": {"text": "Mass Analysis", "fontSize": 20, "color": "gray"},
+          "transform": [{"filter": {"param": "brush"}}],
+          "width": 300,
+          "mark": "bar",
+          "encoding": {
+            "x": {"bin": {"maxbins": 50}, "field": "mass"},
+            "y": {"aggregate": "count"},
+            "tooltip": [
+              {
+                "field": "mass",
+                "type": "quantitative",
+                "title": "Amount of Meteorite",
+                "aggregate": "count"
+              },
+              {
+                "field": "mass",
+                "type": "quantitative",
+                "title": "Min",
+                "aggregate": "min"
+              },
+              {
+                "field": "mass",
+                "type": "quantitative",
+                "title": "Max",
+                "aggregate": "max"
+              },
+              {
+                "field": "mass",
+                "type": "quantitative",
+                "title": "Avg",
+                "aggregate": "average"
+              },
+              {
+                "field": "mass",
+                "type": "quantitative",
+                "title": "Sum",
+                "aggregate": "sum"
+              }
+            ]
           }
         },
         {
+          "title": {"text": "Mass Analysis", "fontSize": 20, "color": "gray"},
+          "transform": [
+            {"filter": {"param": "brush"}},
+            {"filter": "datum.year != null"},
+            {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
+          ],
           "width": 300,
-          "title": "class",
-          "mark": "text",
+          "mark": "line",
           "encoding": {
-            "text": {"field": "recclass", "type": "nominal"},
-            "y": {"field": "row_number", "type": "ordinal", "axis": null}
+            "x": {
+              "field": "year",
+              "timeUnit": "year",
+              "type": "temporal",
+              "title": "Year"
+            },
+            "y": {"field":"row_number", "type": "nominal", "aggregate": "count", "title": "amount of meteorites(sum)"},
+            "tooltip": [
+              {
+                "field": "row_number",
+                "type": "quantitative",
+                "title": "Amount of Meteorite",
+                "aggregate": "count"
+              }]
           }
         }
       ]

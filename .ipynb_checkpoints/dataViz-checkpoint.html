@@ -35,7 +35,7 @@ body {
 <script>
 finalSpec={
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {"url": "https://data.nasa.gov/resource/gh4g-9sfh.json"},
+  "data": {"url": "https://raw.githubusercontent.com/raychangCode/raychangCode.github.io/master/data/processed_1000.json"},
   "transform": [{"window": [{"op": "row_number", "as": "row_number"}]}],
   "background": null,
   "hconcat": [
@@ -173,6 +173,7 @@ finalSpec={
             "longitude": {"field": "reclong", "type": "quantitative"},
             "latitude": {"field": "reclat", "type": "quantitative"},
             "tooltip": [
+              {"field": "country", "type": "ordinal"},
               {"field": "name", "type": "ordinal"},
               {"field": "recclass", "type": "nominal"},
               {

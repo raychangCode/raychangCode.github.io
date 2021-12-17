@@ -206,6 +206,7 @@ finalSpec={
                 "color": {
                   "field": "altitude",
                   "type": "quantitative",
+                  "title": "Altitude",
                   "scale": {
                     "range": [
                       "#762a83",

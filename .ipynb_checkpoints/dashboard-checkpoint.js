@@ -17,7 +17,7 @@ finalSpec={
             "subtitle": "(Hold shift key + mouse to pan the plot)",
             "subtitleColor": "gray"
           },
-          "width": 200
+          "width": 200,
           "transform": [
             {"filter": "datum.date != null"},
             {"filter": {"field": "date", "timeUnit": "year", "gt": 100}}
@@ -206,6 +206,7 @@ finalSpec={
                 "color": {
                   "field": "altitude",
                   "type": "quantitative",
+                  "title": "Altitude",
                   "scale": {
                     "range": [
                       "#762a83",
@@ -317,4 +318,4 @@ finalSpec={
   ],
   "resolve": {"legend": {"color": "independent"}}
 };
-    vegaEmbed('#final_viz', finalSpec);
+    vegaEmbed('#vis', finalSpec);

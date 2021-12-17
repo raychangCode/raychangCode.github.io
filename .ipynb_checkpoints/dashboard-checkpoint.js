@@ -255,9 +255,10 @@ finalSpec={
             "y": {
               "field": "country",
               "type": "nominal",
+              "title": "Country",
               "sort": {"field": "tag_rank", "order": "ascending"}
             },
-            "x": {"field": "country_count", "type": "quantitative"},
+            "x": {"field": "country_count", "type": "quantitative", "title":"Count"},
             "color":{"value":"#ffb700"}
           }
         }
@@ -275,7 +276,7 @@ finalSpec={
           "width": 200,
           "mark": "bar",
           "encoding": {
-            "x": {"bin": {"maxbins": 100}, "field": "altitude"},
+            "x": {"bin": {"maxbins": 100}, "field": "altitude", "title":"Altitude"},
             "y": {"aggregate": "count"},
             "color":{"value":"#ef476f"}
           }
@@ -300,7 +301,7 @@ finalSpec={
               "field": "row_number",
               "type": "nominal",
               "aggregate": "count",
-              "title": "amount of meteorites(sum)"
+              "title": "Total number of meteorites(sum)"
             },
             "tooltip": [
               {

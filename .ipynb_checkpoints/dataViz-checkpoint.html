@@ -35,8 +35,11 @@ body {
 <script>
 finalSpec={
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {"url": "https://raw.githubusercontent.com/raychangCode/raychangCode.github.io/master/data/processed_1000.json"},
-  "transform": [{"window": [{"op": "row_number", "as": "row_number"}]}],
+  "data": {"url": "https://gentle-wildwood-29943.herokuapp.com/meteors/1000"},
+  "transform": [
+    {"filter": "datum.altitude >= -500"},
+    {"window": [{"op": "row_number", "as": "row_number"}]}
+  ],
   "background": null,
   "hconcat": [
     {
@@ -46,47 +49,53 @@ finalSpec={
             "text": "Meteorite Landings Time",
             "fontSize": 20,
             "color": "gray",
-            "subtitle": "(Hold shift key + mouse to select)",
+            "subtitle": "(Hold shift key + mouse to zoom the map)",
             "subtitleColor": "gray"
           },
           "width": 200,
           "transform": [
-            {"filter": "datum.year != null"},
-            {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
+            {"filter": "datum.date != null"},
+            {"filter": {"field": "date", "timeUnit": "year", "gt": 100}}
           ],
           "selection": {
             "zoom": {
               "type": "interval",
               "bind": "scales",
-              "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
-              "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove!"
+              "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+              "translate": "[mousedown[event.shiftKey], mouseup] > mousemove!"
             },
             "brush": {
               "type": "interval",
               "encodings": ["x", "y"],
-              "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-              "translate": "[mousedown[event.shiftKey], mouseup] > mousemove!"
+              "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
+              "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove!"
             }
           },
           "mark": "point",
           "encoding": {
             "x": {
-              "field": "year",
+              "field": "date",
               "timeUnit": "year",
               "type": "temporal",
               "title": "Year"
             },
-            "y": {"field": "mass", "type": "quantitative", "title": "Mass"},
+            "y": {
+              "field": "mass",
+              "type": "quantitative",
+              "title": "Mass",
+              "scale": {"domain": [-2000, 100000]}
+            },
             "color": {
               "condition": {
                 "param": "brush",
-                "field": "mass",
+                "field": "altitude",
                 "type": "quantitative",
                 "legend": null,
-                "scale": {"scheme": "goldorange"}
+                "scale": {"range": ["yellow", "purple"]}
               },
               "value": "grey"
-            }
+            },
+            "shape": {"field": "fall", "type": "nominal"}
           }
         },
         {
@@ -97,13 +106,13 @@ finalSpec={
           },
           "width": 200,
           "transform": [
-            {"filter": "datum.year != null"},
-            {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
+            {"filter": "datum.date != null"},
+            {"filter": {"field": "date", "timeUnit": "year", "gt": 100}}
           ],
           "mark": "point",
           "encoding": {
             "x": {
-              "field": "year",
+              "field": "date",
               "timeUnit": "year",
               "type": "temporal",
               "title": "Year",
@@ -115,88 +124,27 @@ finalSpec={
               "title": "Mass",
               "scale": {"domain": {"selection": "brush", "encoding": "y"}}
             },
-            "color": {
-              "condition": {
-                "param": "brush",
-                "field": "mass",
-                "type": "quantitative",
-                "scale": {"scheme": "goldorange"}
-              },
-              "value": "grey"
-            },
             "tooltip": [
               {"field": "name", "type": "ordinal"},
               {
-                "field": "year",
-                "timeUnit": "year",
-                "type": "temporal",
-                "title": "Year"
-              },
-              {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "title": {
-        "text": "Meteorite Landings on Map",
-        "fontSize": 20,
-        "color": "gray"
-      },
-      "projection": {"type": "equalEarth"},
-      "width": 600,
-      "height": 400,
-      "layer": [
-        {
-          "data": {
-            "name": "world",
-            "url": "https://unpkg.com/world-atlas@1/world/110m.json",
-            "format": {"type": "topojson", "feature": "countries"}
-          },
-          "mark": {"type": "geoshape", "fill": "grey", "stroke": "white"}
-        },
-        {
-          "transform": [
-            {"filter": {"param": "brush"}},
-            {"filter": {"field": "reclong", "valid": true}},
-            {"filter": {"field": "reclat", "valid": true}}
-          ],
-          "params": [
-            {
-              "name": "paintbrush",
-              "select": {"type": "point", "on": "mouseover", "nearest": true}
-            }
-          ],
-          "mark": "circle",
-          "encoding": {
-            "longitude": {"field": "reclong", "type": "quantitative"},
-            "latitude": {"field": "reclat", "type": "quantitative"},
-            "tooltip": [
-              {"field": "country", "type": "ordinal"},
-              {"field": "name", "type": "ordinal"},
-              {"field": "recclass", "type": "nominal"},
-              {
-                "field": "year",
+                "field": "date",
                 "timeUnit": "year",
                 "type": "temporal",
                 "title": "Year"
               },
               {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
             ],
-            "size": {
-              "field": "mass",
-              "type": "quantitative",
-              "scale": {"rangeMax": 1000},
-              "legend": null
-            },
             "color": {
-              "field": "mass",
-              "type": "quantitative",
-              "legend": null,
-              "scale": "goldorange",
-              "condition": {"param": "paintbrush", "value": "red"}
-            }
+              "condition": {
+                "param": "brush",
+                "field": "altitude",
+                "type": "quantitative",
+                "legend": null,
+                "scale": {"range": ["yellow", "purple"]}
+              },
+              "value": "grey"
+            },
+            "shape": {"field": "fall", "type": "nominal"}
           }
         }
       ]
@@ -204,59 +152,126 @@ finalSpec={
     {
       "vconcat": [
         {
-          "title": {"text": "Mass Analysis", "fontSize": 20, "color": "gray"},
+          "title": {
+            "text": "Meteorite Landings on Map",
+            "fontSize": 20,
+            "color": "gray"
+          },
+          "projection": {"type": "equalEarth"},
+          "width": 500,
+          "height": 250,
+          "layer": [
+            {
+              "data": {
+                "name": "world",
+                "url": "https://raw.githubusercontent.com/vega/vega/master/docs/data/world-110m.json",
+                "format": {"type": "topojson", "feature": "countries"}
+              },
+              "mark": {"type": "geoshape", "fill": "grey", "stroke": "white"}
+            },
+            {
+              "transform": [
+                {"filter": {"param": "brush"}},
+                {"filter": {"field": "reclong", "valid": true}},
+                {"filter": {"field": "reclat", "valid": true}}
+              ],
+              "params": [
+                {
+                  "name": "paintbrush",
+                  "select": {
+                    "type": "point",
+                    "on": "mouseover",
+                    "nearest": true
+                  }
+                }
+              ],
+              "mark": {"type": "point", "filled": true, "opacity": 0.6},
+              "encoding": {
+                "longitude": {"field": "reclong", "type": "quantitative"},
+                "latitude": {"field": "reclat", "type": "quantitative"},
+                "tooltip": [
+                  {"field": "country", "type": "ordinal"},
+                  {"field": "name", "type": "ordinal"},
+                  {"field": "altitude", "type": "quantitative"},
+                  {"field": "fall", "type": "nominal"},
+                  {"field": "recclass", "type": "nominal"},
+                  {
+                    "field": "date",
+                    "timeUnit": "year",
+                    "type": "temporal",
+                    "title": "Year"
+                  },
+                  {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
+                ],
+                "size": {
+                  "field": "mass",
+                  "type": "quantitative",
+                  "scale": {"rangeMax": 1000},
+                  "legend": null
+                },
+                "color": {
+                  "field": "altitude",
+                  "type": "quantitative",
+                  "scale": {"range": ["yellow", "purple"]},
+                  "condition": {"param": "paintbrush", "value": "red"}
+                },
+                "shape": {"field": "fall", "type": "nominal", "legend": null}
+              }
+            }
+          ]
+        },
+        {
+          "title": {
+            "text": "Top Landing Countries",
+            "fontSize": 20,
+            "color": "gray"
+          },
+          "mark": "bar",
+          "width": 500,
+          "height": 250,
+          "transform": [
+            {"filter": {"param": "brush"}},
+            {"window": [{"op": "rank", "as": "rank"}]},
+            {"filter": "datum.country != null"}
+          ],
+          "encoding": {
+            "y": {
+              "field": "country",
+              "sort": {"op": "count", "field": "country", "order": "descending"}
+            },
+            "x": {"aggregate": "count"}
+          }
+        }
+      ]
+    },
+    {
+      "vconcat": [
+        {
+          "title": {
+            "text": "Altitude Analysis",
+            "fontSize": 20,
+            "color": "gray"
+          },
           "transform": [{"filter": {"param": "brush"}}],
           "width": 200,
           "mark": "bar",
           "encoding": {
-            "x": {"bin": {"maxbins": 50}, "field": "mass"},
-            "y": {"aggregate": "count"},
-            "tooltip": [
-              {
-                "field": "mass",
-                "type": "quantitative",
-                "title": "Amount of Meteorite",
-                "aggregate": "count"
-              },
-              {
-                "field": "mass",
-                "type": "quantitative",
-                "title": "Min",
-                "aggregate": "min"
-              },
-              {
-                "field": "mass",
-                "type": "quantitative",
-                "title": "Max",
-                "aggregate": "max"
-              },
-              {
-                "field": "mass",
-                "type": "quantitative",
-                "title": "Avg",
-                "aggregate": "average"
-              },
-              {
-                "field": "mass",
-                "type": "quantitative",
-                "title": "Sum",
-                "aggregate": "sum"
-              }
-            ]
+            "x": {"bin": {"maxbins": 100}, "field": "altitude"},
+            "y": {"aggregate": "count"}
           }
         },
         {
           "title": {"text": "Amount and Year", "fontSize": 20, "color": "gray"},
           "transform": [
             {"filter": {"param": "brush"}},
-            {"filter": "datum.year != null"},
-            {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
+            {"filter": "datum.date != null"},
+            {"filter": {"field": "date", "timeUnit": "year", "gt": 100}}
           ],
           "width": 200,
           "mark": "line",
           "encoding": {
             "x": {
-              "field": "year",
+              "field": "date",
               "timeUnit": "year",
               "type": "temporal",
               "title": "Year"

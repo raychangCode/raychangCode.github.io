@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {"url": "https://gentle-wildwood-29943.herokuapp.com/meteors/1000"},
+  "data": {"url": "https://gentle-wildwood-29943.herokuapp.com/meteors/2000"},
   "transform": [
     {"filter": "datum.altitude >= -500"},
     {"window": [{"op": "row_number", "as": "row_number"}]}
@@ -56,7 +56,19 @@
                 "field": "altitude",
                 "type": "quantitative",
                 "legend": null,
-                "scale": {"range": ["yellow", "purple"]}
+                "scale": {
+                  "range": [
+                    "#762a83",
+                    "#9970ab",
+                    "#c2a5cf",
+                    "#e7d4e8",
+                    "#f7f7f7",
+                    "#d9f0d3",
+                    "#a6dba0",
+                    "#5aae61",
+                    "#1b7837"
+                  ]
+                }
               },
               "value": "grey"
             },
@@ -105,7 +117,19 @@
                 "field": "altitude",
                 "type": "quantitative",
                 "legend": null,
-                "scale": {"range": ["yellow", "purple"]}
+                "scale": {
+                  "range": [
+                    "#762a83",
+                    "#9970ab",
+                    "#c2a5cf",
+                    "#e7d4e8",
+                    "#f7f7f7",
+                    "#d9f0d3",
+                    "#a6dba0",
+                    "#5aae61",
+                    "#1b7837"
+                  ]
+                }
               },
               "value": "grey"
             },
@@ -157,7 +181,12 @@
                 "tooltip": [
                   {"field": "country", "type": "ordinal", "title": "Country"},
                   {"field": "name", "type": "ordinal", "title": "Name"},
-                  {"field": "altitude", "type": "quantitative", "format": ".3f", "title": "Altitude"},
+                  {
+                    "field": "altitude",
+                    "type": "quantitative",
+                    "format": ".3f",
+                    "title": "Altitude"
+                  },
                   {"field": "fall", "type": "nominal"},
                   {"field": "recclass", "type": "nominal"},
                   {
@@ -177,7 +206,19 @@
                 "color": {
                   "field": "altitude",
                   "type": "quantitative",
-                  "scale": {"range": ["yellow", "purple"]},
+                  "scale": {
+                    "range": [
+                      "#762a83",
+                      "#9970ab",
+                      "#c2a5cf",
+                      "#e7d4e8",
+                      "#f7f7f7",
+                      "#d9f0d3",
+                      "#a6dba0",
+                      "#5aae61",
+                      "#1b7837"
+                    ]
+                  },
                   "condition": {"param": "paintbrush", "value": "red"}
                 },
                 "shape": {"field": "fall", "type": "nominal", "legend": null}
@@ -196,15 +237,27 @@
           "height": 250,
           "transform": [
             {"filter": {"param": "brush"}},
-            {"window": [{"op": "rank", "as": "rank"}]},
-            {"filter": "datum.country != null"}
+            {"filter": "datum.country != null"},
+            {
+              "aggregate": [
+                {"op": "count", "field": "country", "as": "country_count"}
+              ],
+              "groupby": ["country"]
+            },
+            {
+              "window": [{"op": "rank", "field": "", "as": "tag_rank"}],
+              "sort": [{"field": "country_count", "order": "descending"}]
+            },
+            {"filter": "datum.tag_rank <= 5"}
           ],
           "encoding": {
             "y": {
               "field": "country",
-              "sort": {"op": "count", "field": "country", "order": "descending"}
+              "type": "nominal",
+              "sort": {"field": "tag_rank", "order": "ascending"}
             },
-            "x": {"aggregate": "count"}
+            "x": {"field": "country_count", "type": "quantitative"},
+            "color":{"value":"#ffb700"}
           }
         }
       ]
@@ -222,7 +275,8 @@
           "mark": "bar",
           "encoding": {
             "x": {"bin": {"maxbins": 100}, "field": "altitude"},
-            "y": {"aggregate": "count"}
+            "y": {"aggregate": "count"},
+            "color":{"value":"#ef476f"}
           }
         },
         {
@@ -254,7 +308,8 @@
                 "title": "Amount of Meteorite",
                 "aggregate": "count"
               }
-            ]
+            ],
+            "color":{"value":"#1d3557 "}
           }
         }
       ]

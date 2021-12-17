@@ -317,4 +317,4 @@ finalSpec={
   ],
   "resolve": {"legend": {"color": "independent"}}
 };
-    vegaEmbed('#final_viz', finalSpec);
+    vegaEmbed('#vis', finalSpec);

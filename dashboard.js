@@ -259,7 +259,7 @@ var vegaScheme = {
               "title": "Country",
               "sort": {"field": "tag_rank", "order": "ascending"}
             },
-            "x": {"field": "country_count", "type": "quantitative", "title": "Count",},
+            "x": {"field": "country_count", "type": "quantitative", "title": "Count"},
             "color":{"value":"#ffb700"}
           }
         }

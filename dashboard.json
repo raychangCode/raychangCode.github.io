@@ -1,4 +1,4 @@
-{
+finalSpec={
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "https://gentle-wildwood-29943.herokuapp.com/meteors/2000"},
   "transform": [
@@ -316,4 +316,5 @@
     }
   ],
   "resolve": {"legend": {"color": "independent"}}
-}
+};
+    vegaEmbed('#final_viz', finalSpec);

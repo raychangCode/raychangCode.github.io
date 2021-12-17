@@ -1,4 +1,4 @@
-var vegaScheme = {
+finalSpec={
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "https://gentle-wildwood-29943.herokuapp.com/meteors/2000"},
   "transform": [
@@ -11,13 +11,13 @@ var vegaScheme = {
       "vconcat": [
         {
           "title": {
-            "text": "Meteorite Landings Time",
+            "text": "Meteorite Landings By Year",
             "fontSize": 20,
             "color": "gray",
-            "subtitle": "(Hold shift key + mouse to zoom the map)",
+            "subtitle": "(Hold shift key + mouse to pan the plot)",
             "subtitleColor": "gray"
           },
-          "width": 200,
+          "width": 200
           "transform": [
             {"filter": "datum.date != null"},
             {"filter": {"field": "date", "timeUnit": "year", "gt": 100}}
@@ -77,7 +77,7 @@ var vegaScheme = {
         },
         {
           "title": {
-            "text": "Meteorite Landings Time(Zoom)",
+            "text": "Meteorite Landings By Year (Zoom)",
             "fontSize": 20,
             "color": "gray"
           },
@@ -228,7 +228,7 @@ var vegaScheme = {
         },
         {
           "title": {
-            "text": "Top Landing Countries",
+            "text": "Top Countries By Number of Meteorites",
             "fontSize": 20,
             "color": "gray"
           },
@@ -266,7 +266,7 @@ var vegaScheme = {
       "vconcat": [
         {
           "title": {
-            "text": "Altitude Analysis",
+            "text": "Altitude Histogram",
             "fontSize": 20,
             "color": "gray"
           },
@@ -280,7 +280,7 @@ var vegaScheme = {
           }
         },
         {
-          "title": {"text": "Amount and Year", "fontSize": 20, "color": "gray"},
+          "title": {"text": "Count By Year", "fontSize": 20, "color": "gray"},
           "transform": [
             {"filter": {"param": "brush"}},
             {"filter": "datum.date != null"},
@@ -316,6 +316,5 @@ var vegaScheme = {
     }
   ],
   "resolve": {"legend": {"color": "independent"}}
-}
-
-vegaEmbed("#vis", vegaScheme)
+};
+    vegaEmbed('#final_viz', finalSpec);

@@ -1,4 +1,4 @@
-var vegaScheme = {
+finalSpec={
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "https://gentle-wildwood-29943.herokuapp.com/meteors/2000"},
   "transform": [
@@ -11,13 +11,13 @@ var vegaScheme = {
       "vconcat": [
         {
           "title": {
-            "text": "Meteorite Landings Time",
+            "text": "Meteorite Landings By Year",
             "fontSize": 20,
             "color": "gray",
-            "subtitle": "(Hold shift key + mouse to zoom the map)",
+            "subtitle": "(Hold shift key + mouse to pan the plot)",
             "subtitleColor": "gray"
           },
-          "width": 200,
+          "width": 200
           "transform": [
             {"filter": "datum.date != null"},
             {"filter": {"field": "date", "timeUnit": "year", "gt": 100}}
@@ -73,12 +73,11 @@ var vegaScheme = {
               "value": "grey"
             },
             "shape": {"field": "fall", "type": "nominal"}
-            
           }
         },
         {
           "title": {
-            "text": "Meteorite Landings by Year (Zoom)",
+            "text": "Meteorite Landings By Year (Zoom)",
             "fontSize": 20,
             "color": "gray"
           },
@@ -207,7 +206,6 @@ var vegaScheme = {
                 "color": {
                   "field": "altitude",
                   "type": "quantitative",
-                  "title": "Altitude",
                   "scale": {
                     "range": [
                       "#762a83",
@@ -230,7 +228,7 @@ var vegaScheme = {
         },
         {
           "title": {
-            "text": "Top Countries by Meteorite Count",
+            "text": "Top Countries By Number of Meteorites",
             "fontSize": 20,
             "color": "gray"
           },
@@ -256,10 +254,9 @@ var vegaScheme = {
             "y": {
               "field": "country",
               "type": "nominal",
-              "title": "Country",
               "sort": {"field": "tag_rank", "order": "ascending"}
             },
-            "x": {"field": "country_count", "type": "quantitative", "title": "Count"},
+            "x": {"field": "country_count", "type": "quantitative"},
             "color":{"value":"#ffb700"}
           }
         }
@@ -277,13 +274,13 @@ var vegaScheme = {
           "width": 200,
           "mark": "bar",
           "encoding": {
-            "x": {"bin": {"maxbins": 100}, "field": "altitude", "title": "Altitude"},
+            "x": {"bin": {"maxbins": 100}, "field": "altitude"},
             "y": {"aggregate": "count"},
             "color":{"value":"#ef476f"}
           }
         },
         {
-          "title": {"text": "Count by Year", "fontSize": 20, "color": "gray"},
+          "title": {"text": "Count By Year", "fontSize": 20, "color": "gray"},
           "transform": [
             {"filter": {"param": "brush"}},
             {"filter": "datum.date != null"},
@@ -302,7 +299,7 @@ var vegaScheme = {
               "field": "row_number",
               "type": "nominal",
               "aggregate": "count",
-              "title": "Total Number of meteorites (Sum)"
+              "title": "amount of meteorites(sum)"
             },
             "tooltip": [
               {
@@ -320,5 +317,4 @@ var vegaScheme = {
   ],
   "resolve": {"legend": {"color": "independent"}}
 };
-
-vegaEmbed("#vis", vegaScheme)
+    vegaEmbed('#final_viz', finalSpec);

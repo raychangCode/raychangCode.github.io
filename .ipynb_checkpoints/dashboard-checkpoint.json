@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {"url": "https://gentle-wildwood-29943.herokuapp.com/meteors/500"},
+  "data": {"url": "https://gentle-wildwood-29943.herokuapp.com/meteors/1000"},
   "transform": [
     {"filter": "datum.altitude >= -500"},
     {"window": [{"op": "row_number", "as": "row_number"}]}
@@ -155,9 +155,9 @@
                 "longitude": {"field": "reclong", "type": "quantitative"},
                 "latitude": {"field": "reclat", "type": "quantitative"},
                 "tooltip": [
-                  {"field": "country", "type": "ordinal"},
-                  {"field": "name", "type": "ordinal"},
-                  {"field": "altitude", "type": "quantitative"},
+                  {"field": "country", "type": "ordinal", "title": "Country"},
+                  {"field": "name", "type": "ordinal", "title": "Name"},
+                  {"field": "altitude", "type": "quantitative", "format": ".3f", "title": "Altitude"},
                   {"field": "fall", "type": "nominal"},
                   {"field": "recclass", "type": "nominal"},
                   {

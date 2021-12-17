@@ -319,6 +319,6 @@ var vegaScheme = {
     }
   ],
   "resolve": {"legend": {"color": "independent"}}
-}
+};
 
 vegaEmbed("#vis", vegaScheme)

@@ -17,7 +17,7 @@ finalSpec={
             "subtitle": "(Hold shift key + mouse to pan the plot)",
             "subtitleColor": "gray"
           },
-          "width": 200
+          "width": 200,
           "transform": [
             {"filter": "datum.date != null"},
             {"filter": {"field": "date", "timeUnit": "year", "gt": 100}}

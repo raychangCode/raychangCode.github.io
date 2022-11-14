@@ -1,6 +1,6 @@
 finalSpec={
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {"url": "https://gentle-wildwood-29943.herokuapp.com/meteors/2000"},
+  "data": {"url": "https://raw.githubusercontent.com/raychangCode/raychangCode.github.io/master/processed_4K_elevation%20(1).json"},
   "transform": [
     {"filter": "datum.altitude >= -500"},
     {"window": [{"op": "row_number", "as": "row_number"}]}

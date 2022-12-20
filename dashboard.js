@@ -1,6 +1,6 @@
 finalSpec={
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {"url": "https://raw.githubusercontent.com/raychangCode/raychangCode.github.io/master/processed_4K_elevation%20(1).json"},
+  "data": {"url": "https://raw.githubusercontent.com/raychangCode/raychangCode.github.io/master/export_dataframe_4k.json"},
   "transform": [
     {"filter": "datum.altitude >= -500"},
     {"window": [{"op": "row_number", "as": "row_number"}]}
@@ -19,8 +19,8 @@ finalSpec={
           },
           "width": 200,
           "transform": [
-            {"filter": "datum.date != null"},
-            {"filter": {"field": "date", "timeUnit": "year", "gt": 100}}
+            {"filter": "datum.year != null"},
+            {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
           ],
           "selection": {
             "zoom": {
@@ -39,9 +39,9 @@ finalSpec={
           "mark": "point",
           "encoding": {
             "x": {
-              "field": "date",
+              "field": "year",
               "timeUnit": "year",
-              "type": "temporal",
+              "type": "quantitative",
               "title": "Year"
             },
             "y": {
@@ -83,15 +83,15 @@ finalSpec={
           },
           "width": 200,
           "transform": [
-            {"filter": "datum.date != null"},
-            {"filter": {"field": "date", "timeUnit": "year", "gt": 100}}
+            {"filter": "datum.year != null"},
+            {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
           ],
           "mark": "point",
           "encoding": {
             "x": {
-              "field": "date",
+              "field": "year",
               "timeUnit": "year",
-              "type": "temporal",
+              "type": "quantitative",
               "title": "Year",
               "scale": {"domain": {"selection": "brush", "encoding": "x"}}
             },
@@ -104,9 +104,9 @@ finalSpec={
             "tooltip": [
               {"field": "name", "type": "ordinal"},
               {
-                "field": "date",
+                "field": "year",
                 "timeUnit": "year",
-                "type": "temporal",
+                "type": "quantitative",
                 "title": "Year"
               },
               {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
@@ -190,9 +190,9 @@ finalSpec={
                   {"field": "fall", "type": "nominal"},
                   {"field": "recclass", "type": "nominal"},
                   {
-                    "field": "date",
+                    "field": "year",
                     "timeUnit": "year",
-                    "type": "temporal",
+                    "type": "quantitative",
                     "title": "Year"
                   },
                   {"field": "mass", "type": "quantitative", "title": "Mass(g)"}
@@ -285,16 +285,16 @@ finalSpec={
           "title": {"text": "Count By Year", "fontSize": 20, "color": "gray"},
           "transform": [
             {"filter": {"param": "brush"}},
-            {"filter": "datum.date != null"},
-            {"filter": {"field": "date", "timeUnit": "year", "gt": 100}}
+            {"filter": "datum.year != null"},
+            {"filter": {"field": "year", "timeUnit": "year", "gt": 100}}
           ],
           "width": 200,
           "mark": "line",
           "encoding": {
             "x": {
-              "field": "date",
+              "field": "year",
               "timeUnit": "year",
-              "type": "temporal",
+              "type": "quantitative",
               "title": "Year"
             },
             "y": {
